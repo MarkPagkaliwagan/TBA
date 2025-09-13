@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Golden Nest — Poultry & Egg Production</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+  /* ========== VARIABLES ========== */
+  :root{
+    --bg: #fffaf0;
+    --panel: rgba(255,255,255,0.92);
+    --accent-1: #fbbf24;
+    --accent-2: #f59e0b;
+    --muted: #6b6b6b;
+    --radius: 14px;
+    --shadow-1: 0 6px 20px rgba(11,11,11,0.08);
+    --shadow-2: 0 12px 30px rgba(11,11,11,0.12);
+    --max-width: 1200px;
+    --ease: cubic-bezier(.22,.9,.28,1);
+    --glass: rgba(255,255,255,0.55);
+    --nav-h: 72px;
+  }
+
+  /* ========== RESET ========== */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,#fff7e6 0%, #fffaf0 60%);
+    color:#0f172a; margin:0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.5;
+  }
+  img{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none}
+  button{font:inherit}
+
+  /* ========== CONTAINER ========== */
+  .container{width:100%; max-width:var(--max-width); margin:0 auto; padding:0 20px}
+
+  /* ========== NAV ========== */
+  .nav-wrap{position:sticky; top:12px; z-index:80;}
+  .nav{
+    display:flex; align-items:center; gap:14px; padding:10px; border-radius:999px; backdrop-filter: blur(6px) saturate(120%);
+    background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8)); box-shadow:var(--shadow-1);
+  }
+  .brand{display:flex; gap:12px; align-items:center}
+  .logo{width:56px; height:56px; border-radius:12px; overflow:hidden; flex:0 0 56px}
+  .brand h4{margin:0; font-size:15px; font-weight:800}
+  .brand p{margin:0; font-size:12px; color:var(--muted); font-weight:600}
+
+  .nav-links{margin-left:auto; display:flex; gap:8px; align-items:center}
+  .nav-links a{padding:8px 12px; border-radius:10px; font-weight:700; font-size:14px; color:#0f172a; transition:all .18s var(--ease)}
+  .nav-links a:hover{color:var(--accent-2); transform: translateY(-3px)}
+  .cta{background:linear-gradient(180deg,var(--accent-1),var(--accent-2)); color:white; padding:10px 14px; border-radius:10px; font-weight:800; box-shadow:0 8px 22px rgba(245,158,11,0.16)}
+
+  /* mobile menu */
+  .mobile-toggle{display:none; background:transparent; border:0; width:44px; height:44px; border-radius:10px; display:grid; place-items:center}
+  .mobile-menu{display:none; position:absolute; right:20px; top:80px; background:var(--panel); padding:12px; border-radius:12px; box-shadow:var(--shadow-2); width:220px}
+  .mobile-menu a{display:block; padding:8px 10px; border-radius:8px}
+
+  /* ========== HERO ========== */
+  .hero{margin:28px auto 42px; display:grid; grid-template-columns:1fr 460px; gap:28px; align-items:center; padding:28px; border-radius:18px; background:var(--panel); box-shadow:var(--shadow-2);}
+  .hero-left h1{font-size:44px; margin:0 0 8px; letter-spacing:-0.6px}
+  .tagline{margin:0 0 12px; color:#334155; font-style:italic; font-weight:600}
+  .hero-desc{color:#475569; margin-bottom:18px; max-width:64ch}
+
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap}
+  .btn{padding:12px 16px; border-radius:12px; font-weight:800; cursor:pointer; border:0; display:inline-flex; gap:10px; align-items:center; transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+  .btn-primary{background:linear-gradient(180deg,var(--accent-1),var(--accent-2)); color:white; box-shadow:0 10px 30px rgba(245,158,11,0.12)}
+  .btn-outline{background:transparent; border:2px solid rgba(15,23,42,0.06); color:#0f172a}
+  .btn:focus{outline:3px solid rgba(245,158,11,0.18); outline-offset:4px}
+
+  .hero-right{border-radius:12px; overflow:hidden; position:relative; min-height:340px; background:linear-gradient(180deg,#fffaf0,#fff5e6); display:flex; align-items:center; justify-content:center}
+  .hero-photo{width:100%; height:100%; object-fit:cover}
+
+  .logo-drop{position:absolute; left:18px; top:18px; background:rgba(255,255,255,0.95); padding:10px; border-radius:12px; box-shadow:var(--shadow-1); display:flex; gap:12px; align-items:center}
+  .logo-drop img{width:56px; height:56px; border-radius:10px; object-fit:cover}
+
+  .stats{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+  .stat{background:var(--panel); padding:10px 14px; border-radius:10px; box-shadow:var(--shadow-1); min-width:140px}
+  .stat strong{display:block; font-size:18px}
+  .small-muted{color:var(--muted); font-size:14px}
+
+  /* ========== SECTIONS ========== */
+  .section{width:100%; max-width:var(--max-width); margin:28px auto; padding:0 20px}
+  .grid-2{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
+
+  .card{background:var(--panel); padding:18px; border-radius:14px; box-shadow:var(--shadow-1); border:1px solid rgba(15,23,42,0.04); transition:transform .22s var(--ease), box-shadow .22s var(--ease)}
+  .card:hover{transform:translateY(-6px); box-shadow:var(--shadow-2)}
+
+  .mission-vision{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px}
+
+  /* ========== PRODUCTS ========== */
+  .products{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}
+  .product{border-radius:14px; padding:16px; background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,246,230,0.95)); display:flex; gap:12px; align-items:center; box-shadow:var(--shadow-1); border:1px solid rgba(15,23,42,0.03)}
+  .product:hover{transform:translateY(-8px); box-shadow:var(--shadow-2)}
+  .p-thumb{width:72px; height:72px; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fff,#fff3e0); box-shadow:0 6px 14px rgba(11,11,11,0.06)}
+  .p-meta h4{margin:0; font-size:16px}
+  .p-meta p{margin:6px 0 0; color:var(--muted); font-size:13px}
+
+  /* ========== GALLERY ========== */
+  .gallery-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  .gallery-item{position:relative; border-radius:12px; overflow:hidden; cursor:pointer}
+  .gallery-item img{width:100%; height:190px; object-fit:cover; display:block}
+  .gallery-caption{position:absolute; left:8px; bottom:8px; background:linear-gradient(90deg, rgba(0,0,0,0.48), rgba(0,0,0,0.18)); color:white; padding:8px 10px; border-radius:10px; font-size:13px}
+
+  /* modal */
+  .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:120}
+  .modal.open{display:flex}
+  .modal-content{max-width:80%; max-height:80%; border-radius:12px; overflow:hidden; background:#fff; box-shadow:var(--shadow-2);}
+  .modal-content img{width:100%; height:auto; display:block}
+  .modal-meta{padding:12px; display:flex; justify-content:space-between; align-items:center}
+  .modal-close{background:transparent; border:0; font-size:20px; cursor:pointer}
+
+  /* ========== CONTACT ========== */
+  .contact-grid{display:grid; grid-template-columns:1fr 360px; gap:18px; align-items:start}
+  .form input,.form textarea{width:100%; padding:12px 14px; margin-bottom:12px; border-radius:10px; border:1px solid rgba(15,23,42,0.06); background:white; font-size:14px}
+  .form textarea{min-height:140px; resize:vertical}
+  .info-block{padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,246,230,0.95)); box-shadow:var(--shadow-1)}
+
+  /* ========== FOOTER ========== */
+  footer{margin-top:28px; padding:26px 12px; text-align:center; color:white; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); border-radius:12px; width:calc(100% - 40px); max-width:var(--max-width); margin-left:auto; margin-right:auto; box-shadow:var(--shadow-2)}
+
+  /* ========== UTILITIES ========== */
+  .visually-hidden{position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap}
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr; padding:18px}
+    .grid-2{grid-template-columns:1fr}
+    .contact-grid{grid-template-columns:1fr}
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:720px){
+    .nav-links{display:none}
+    .mobile-toggle{display:grid}
+    .mobile-menu{display:none}
+    .gallery-grid{grid-template-columns:1fr}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important}
+  }
+  </style>
+</head>
+<body>
+
+  <div class="nav-wrap container" aria-hidden="false">
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <div class="brand" role="banner">
+        <div class="logo" aria-hidden="true"><img id="navLogo" src="assets/logo.png" alt="Golden Nest logo"></div>
+        <div>
+          <h4>Golden Nest</h4>
+          <p>Free-range poultry & eggs</p>
+        </div>
+      </div>
+
+      <div class="nav-links" role="menubar" aria-label="Primary">
+        <a role="menuitem" href="#about">About</a>
+        <a role="menuitem" href="#mission">Mission</a>
+        <a role="menuitem" href="#products">Products</a>
+        <a role="menuitem" href="#gallery">Gallery</a>
+        <a role="menuitem" href="#contact">Contact</a>
+        <a class="cta" role="button" href="#products">Order Now</a>
+
+        <!-- small file input for local preview (demo) -->
+        <label for="logoUpload" class="visually-hidden">Upload logo</label>
+        <input id="logoUpload" type="file" accept="image/*" style="display:none">
+        <button id="logoBtn" title="Upload logo (local preview)" class="mobile-toggle" aria-label="Upload logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v10" stroke="#0f172a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12l7-9 7 9" stroke="#0f172a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <button class="mobile-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="#0f172a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div id="mobileMenu" class="mobile-menu" role="menu" aria-hidden="true">
+        <a href="#about">About</a>
+        <a href="#mission">Mission</a>
+        <a href="#products">Products</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" href="#products" style="display:block; margin-top:8px; text-align:center">Order Now</a>
+      </div>
+    </nav>
+  </div>
+
+  <main>
+    <section class="hero container" aria-label="Intro">
+      <div class="hero-left">
+        <h1>Golden Nest</h1>
+        <p class="tagline">“Egg-cellent quality, every time”</p>
+        <p class="hero-desc">Sustainably farmed free-range chickens producing fresh, delicious eggs and premium poultry meat — direct from our farm to your table.</p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="exploreBtn">Explore Products</button>
+          <a class="btn btn-outline" href="#contact">Get in Touch</a>
+        </div>
+
+        <div class="stats" aria-hidden="false">
+          <div class="stat"><strong>1,200+</strong><div class="small-muted">eggs / week</div></div>
+          <div class="stat"><strong>Local</strong><div class="small-muted">suppliers supported</div></div>
+          <div class="stat"><strong>Free-range</strong><div class="small-muted">animal welfare</div></div>
+        </div>
+      </div>
+
+      <div class="hero-right" aria-hidden="false">
+        <img class="hero-photo" id="heroPhoto" src="assets/hero.jpg" alt="Free range chickens on pasture">
+        <div class="logo-drop" title="Your logo here" aria-hidden="true">
+          <img id="miniLogo" src="assets/logo.png" alt="mini logo">
+          <div style="font-weight:700;font-size:13px">Golden Nest</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section container" aria-labelledby="aboutTitle">
+      <h2 id="aboutTitle" style="text-align:center">About Us</h2>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="card">
+          <h3>Who we are</h3>
+          <p class="small-muted">Golden Nest is a family-run farm raising free-range chickens to provide fresh eggs and quality poultry meat. We prioritize animal welfare, food safety, and community support.</p>
+        </div>
+        <div class="card">
+          <h3>What makes us different</h3>
+          <p class="small-muted">Free-range practices, minimal chemical inputs, and local sourcing. Our products are traceable and handled with strict hygiene standards.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mission" class="section container" aria-labelledby="missionTitle">
+      <h2 id="missionTitle" style="text-align:center">Mission & Vision</h2>
+      <div class="mission-vision" style="margin-top:14px">
+        <div class="card">
+          <h3>Mission</h3>
+          <p class="small-muted">“Nourishing communities with quality poultry and eggs, sustainably and with care.”</p>
+        </div>
+        <div class="card">
+          <h3>Vision</h3>
+          <p class="small-muted">“To be a leading, trusted brand in poultry and egg production, setting standards for excellence and sustainability.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="section container" aria-labelledby="productsTitle">
+      <h2 id="productsTitle" style="text-align:center">Our Products</h2>
+      <div class="products" role="list" style="margin-top:14px">
+        <article class="product" role="listitem">
+          <div class="p-thumb"><img src="assets/egg.jpg" alt="eggs icon"></div>
+          <div class="p-meta"><h4>Fresh Free-Range Eggs</h4><p>Collected daily — nutritious, chemical-free, and delicious.</p></div>
+        </article>
+
+        <article class="product" role="listitem">
+          <div class="p-thumb"><img src="assets/egg2.jpg" alt="poultry icon"></div>
+          <div class="p-meta"><h4>Poultry Meat</h4><p>High-quality, tender poultry prepared under hygienic conditions.</p></div>
+        </article>
+
+        <article class="product" role="listitem">
+          <div class="p-thumb"><img src="assets/333.jpg" alt="packages"></div>
+          <div class="p-meta"><h4>Farm Packages</h4><p>Custom bundles for households and local restaurants.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery" class="section container" aria-labelledby="galleryTitle">
+      <h2 id="galleryTitle" style="text-align:center">Gallery</h2>
+      <p style="text-align:center; color:var(--muted); margin-top:6px">Click an image to view larger — use ← → keys to navigate, Esc to close.</p>
+
+      <div class="gallery-grid" id="galleryGrid" style="margin-top:14px">
+        <figure class="gallery-item" data-caption="Free-range hens grazing" tabindex="0">
+          <img src="assets/gallery1.jpg" alt="Free-range hens grazing" loading="lazy">
+          <figcaption class="gallery-caption">Free-range hens — Morning pasture</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-caption="Egg collection: fresh daily" tabindex="0">
+          <img src="assets/gallery2.jpg" alt="Egg collection" loading="lazy">
+          <figcaption class="gallery-caption">Egg collection — Fresh daily</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-caption="Our clean coop & nesting boxes" tabindex="0">
+          <img src="assets/gallery3.jpg" alt="Clean coop and nesting boxes" loading="lazy">
+          <figcaption class="gallery-caption">Clean coop — Nesting boxes</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="contact" class="section container" aria-labelledby="contactTitle">
+      <h2 id="contactTitle" style="text-align:center">Contact & Orders</h2>
+      <div class="contact-grid" style="margin-top:14px">
+        <form class="form card" style="padding:20px;" onsubmit="event.preventDefault(); handleSubmit()" novalidate>
+          <label for="name" style="font-weight:700">Name</label>
+          <input id="name" name="name" placeholder="Your full name" required>
+
+          <label for="email" style="font-weight:700">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required>
+
+          <label for="message" style="font-weight:700">Message / Order details</label>
+          <textarea id="message" name="message" placeholder="Quantity, preferred delivery date, special instructions..."></textarea>
+
+          <div style="display:flex; gap:10px; align-items:center">
+            <button class="btn btn-primary" type="submit">Send Message</button>
+            <button type="reset" class="btn btn-outline">Reset</button>
+          </div>
+        </form>
+
+        <aside class="info-block card">
+          <h3 style="margin-top:0">Reach us</h3>
+          <div class="contact-icons">
+            <div class="icon-row"><div class="icon">✉</div><div><div style="font-weight:700">Email</div><div class="small-muted">info@goldennest.com</div></div></div>
+            <div class="icon-row"><div class="icon">☎</div><div><div style="font-weight:700">Phone</div><div class="small-muted">+63 912 345 6789</div></div></div>
+            <div class="icon-row"><div class="icon">📍</div><div><div style="font-weight:700">Location</div><div class="small-muted">123 Country Lane, Farmville</div></div></div>
+          </div>
+
+          <hr style="margin:16px 0; border:none; border-top:1px solid rgba(15,23,42,0.04)">
+          <div style="font-size:13px; color:var(--muted)">To add your own logo or photos: use the upload control in the nav (local preview only) or replace files in <code>assets/</code>.</div>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="container" role="contentinfo" style="margin-bottom:24px">
+      <div style="text-align:center; padding:18px; border-radius:12px; background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white;">
+        <div style="font-weight:800">Golden Nest</div>
+        <div style="margin-top:6px;font-size:13px">© <span id="year"></span> Golden Nest. All rights reserved.</div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- LIGHTBOX / MODAL -->
+  <div id="lightbox" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content" role="document">
+      <img id="lightboxImg" src="" alt="">
+      <div class="modal-meta">
+        <div id="lightboxCaption" style="font-weight:700"></div>
+        <div>
+          <button id="prevBtn" class="modal-close" title="Previous">◀</button>
+          <button id="nextBtn" class="modal-close" title="Next">▶</button>
+          <button id="closeBtn" class="modal-close" title="Close">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // smooth scroll
+  document.getElementById('exploreBtn').addEventListener('click', () => document.getElementById('products').scrollIntoView({behavior:'smooth'}));
+
+  // mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuToggle.addEventListener('click', () => {
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!expanded));
+    mobileMenu.style.display = expanded ? 'none' : 'block';
+    mobileMenu.setAttribute('aria-hidden', String(expanded));
+  });
+
+  // logo upload preview (local only — demo)
+  const logoUpload = document.getElementById('logoUpload');
+  const logoBtn = document.getElementById('logoBtn');
+  const navLogo = document.getElementById('navLogo');
+  const miniLogo = document.getElementById('miniLogo');
+  logoBtn.addEventListener('click', () => logoUpload.click());
+  logoUpload.addEventListener('change', (ev) => {
+    const file = ev.target.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    navLogo.src = url; miniLogo.src = url;
+    // revoke after image loads
+    navLogo.onload = () => URL.revokeObjectURL(url);
+  });
+
+  // simple form handler (demo)
+  function handleSubmit(){
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if(!name || !email){
+      alert('Please fill your name and email before submitting.');
+      return;
+    }
+    // demo success
+    alert('Thanks, ' + name + '! We received your message.');
+    document.querySelector('.form').reset();
+  }
+
+  // Gallery & lightbox
+  const gallery = Array.from(document.querySelectorAll('.gallery-item'));
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  let currentIndex = -1;
+
+  function openLightbox(index){
+    const item = gallery[index];
+    if(!item) return;
+    const imgEl = item.querySelector('img');
+    lightboxImg.src = imgEl.src;
+    lightboxImg.alt = imgEl.alt || '';
+    lightboxCaption.textContent = item.dataset.caption || item.querySelector('.gallery-caption').textContent || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+    currentIndex = index;
+    document.body.style.overflow = 'hidden';
+    // trap focus roughly
+    document.getElementById('closeBtn').focus();
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+    lightboxImg.src = '';
+    currentIndex = -1;
+    document.body.style.overflow = '';
+  }
+  function showNext(){ openLightbox((currentIndex + 1) % gallery.length); }
+  function showPrev(){ openLightbox((currentIndex - 1 + gallery.length) % gallery.length); }
+
+  gallery.forEach((fig, i) => {
+    fig.addEventListener('click', () => openLightbox(i));
+    fig.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); } });
+  });
+
+  document.getElementById('closeBtn').addEventListener('click', closeLightbox);
+  document.getElementById('nextBtn').addEventListener('click', showNext);
+  document.getElementById('prevBtn').addEventListener('click', showPrev);
+  lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+
+  // keyboard nav for lightbox
+  document.addEventListener('keydown', (e) => {
+    if(lightbox.classList.contains('open')){
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowRight') showNext();
+      if(e.key === 'ArrowLeft') showPrev();
+    }
+  });
+
+  // small accessibility: focus visible outline for keyboard users
+  (function(){
+    function handleFirstTab(e){
+      if(e.key === 'Tab') document.documentElement.classList.add('user-is-tabbing');
+      window.removeEventListener('keydown', handleFirstTab);
+    }
+    window.addEventListener('keydown', handleFirstTab);
+  })();
+  </script>
+</body>
+</html>
